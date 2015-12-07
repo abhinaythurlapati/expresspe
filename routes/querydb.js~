@@ -29,12 +29,12 @@ morning_end = momentz.tz(morning_end._d,'GMT');
 morning_start = moment.utc(morning_start.format()); //so converting it again to moment object
 morning_end = moment.utc(morning_end.format());
 
-var afternoon_start = moment("2015-05-26T11:00:00.000+0530");
+var afternoon_start = moment("2015-05-26T11:00:00.000+0530"); // can be entered as per local format with offset
 var afternoon_end = moment("2015-05-26T16:00:00.000+0530");
 afternoon_start = momentz.tz(afternoon_start._d,'GMT');
 afternoon_end = momentz.tz(afternoon_end._d,'GMT');
 afternoon_start = moment.utc(afternoon_start.format());
-afternoon_end = moment.utc(afternoon_end.format());
+afternoon_end = moment.utc(afternoon_end.format());	// we will get according to utc solving offset issues
 
 var evening_start = moment("2015-05-26T16:00:00.000+0530");
 var evening_end = moment("2015-05-26T20:00:00.000+0530");
@@ -69,7 +69,7 @@ query.post(function(req,res){
 
 	var callbackCounter = 0;
 	var getData = function(session){
-		
+		/*
 		console.log("in function getData");
 		console.log("from Date");
 		console.log(fromDate);
@@ -80,7 +80,7 @@ query.post(function(req,res){
 		var sessionStartMinutes; 
 		var sessionEndHours;
 		var sessionEndMinutes;
-		
+		*/
 		switch(session){
 		case "Morning" : 
 							sessionStartHours = morning_start.hours();
@@ -144,7 +144,7 @@ query.post(function(req,res){
 		             		else{			
 		             			var session_data = [];
 		             		
-		             			console.log(session);
+		             			//console.log(session);
 		             			//console.log(docs);
 		             			
 		             				var y_variables = ["totalTxWifi","totalRxWifi","totalTxCell","totalRxCell" ];
@@ -170,8 +170,8 @@ query.post(function(req,res){
 		             					
 		             				}
 		             				else{
-		             						console.log("success");
-		             						console.log(docs.length);
+		             						//console.log("success");
+		             						//console.log(docs.length);
 		             					for(var i =0 ; i < docs.length;i++){ // this for loop has no significance, any way length would be 1  
 		             						docs[i].Session = session;
 		             					        //console.log(docs[i]);	
@@ -204,30 +204,32 @@ query.post(function(req,res){
 						callbackCounter++;
 						if(callbackCounter === 5){
 							res.set("Access-Control-Allow-Origin", "*");
-	  						console.log("sending the data as per request");
+	  						console.log("sending the data as per request at " + moment()._d);
 							console.log(datatosend);
 	  						res.write(JSON.stringify(datatosend));
-	  						res.end();
+							console.log("sent the data as per request at  " + moment()._d);	  				
+							res.end();
 						}
 		             		});
 		
 };
 	
-  console.log("request received for query");
+  console.log("request received for query at " + moment()._d);
    var received = req.body;
-   console.log("data received");
+   console.log("data received at " + moment()._d);
  // console.log("the format received through request");
   received = JSON.parse(received);
-  console.log("received start date");
+ 
+ /* console.log("received start date");
   console.log(received.startDate);
   console.log("received end date");
   console.log(received.endDate);
-  
+ */ 
  //storing these in variables
    var startDate = received.startDate;
    var endDate = received.endDate;
   
- console.log("Accessing individual start date parameters");
+// console.log("Accessing individual start date parameters");
   //directly we wont able to access individual date/month/year etc
   // converting that to moment object
   startDate = moment(startDate);
@@ -239,26 +241,29 @@ query.post(function(req,res){
  */
  // newDate(year,month,date)
 
-  var fromDate = new Date(startDate.year(),startDate.month()-1,startDate.date());
+  var fromDate = new Date(startDate.year(),startDate.month(),startDate.date());
   /*
   fromDate = moment(fromDate);
   fromDate = momentz.tz(fromDate._d,'GMT');
   fromDate = moment.utc(fromDate.format());
   fromDate = fromDate._i;
 */
-  var toDate = new Date(endDate.year(),endDate.month()-1,endDate.date());
+  var toDate = new Date(endDate.year(),endDate.month(),endDate.date());
+  console.log("going to query with the following dates");
+  console.log(fromDate);
+  console.log(toDate);
 /*  
   toDate = moment(toDate);
   toDate = momentz.tz(toDate._d,'GMT');           // _i contain time according to gmt in final variables of from date and to date  
   toDate = moment.utc(toDate.format());
   toDate = toDate._i;            // _d contains as per local time in final variables of from date and to date
-*/
+
   console.log("created new date object from received start date");
   console.log(fromDate);
   console.log("created new date object from received to date");
   console.log(toDate);
 
-  
+*/  
   
   
   var datatosend = [];
