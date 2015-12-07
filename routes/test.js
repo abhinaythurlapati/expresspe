@@ -3,7 +3,10 @@ function tryMe (param1, param2) {
 }
 
 function callbackTester (callback) {
+ 
+ console.log(arguments[0]);
  var received =     callback (arguments[1], arguments[2]);
+ 
  console.log(received);
 }
 

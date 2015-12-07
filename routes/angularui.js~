@@ -1,0 +1,15 @@
+var express = require('express')
+, router = express.Router()
+  , appui = router.route('/')
+var querystring = require("querystring");
+var fs = require("fs");
+var formidable = require("formidable");
+var security = require("../encryption.js"); 
+var database = require("../databaseConnection.js");
+var path = require('path');
+var db1 = database.db1();
+
+appui.post(function(req,res){
+console.log(req.body);
+
+});
