@@ -7,6 +7,7 @@ var server = require('./server');
 var bikeRoutes = require('./routes/bikes');
 var sync_data = require('./routes/synchronise');
 var query = require('./routes/querydb.js');
+var getMobileNumbers = require('./routes/sendMobileNumbers.js');
 //var database = require("../databaseConnection");
 //var db1 = database.db1();
 //var query = require('./routes/query');
@@ -51,6 +52,7 @@ app.use(function(req, res, next) {
 app.use('/bikes', bikeRoutes);
 app.use('/sync_data',sync_data);
 app.use('/query',query);
+app.use('/get_mbnum',getMobileNumbers);
 var server = app.listen(8888, function () {
 
 	var host = server.address().address
@@ -59,4 +61,4 @@ var server = app.listen(8888, function () {
 	console.log("listening at http://%s:%s", host, port);
 
 });
-
+	
