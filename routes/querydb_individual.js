@@ -1,6 +1,6 @@
 var express = require('express')
 , router = express.Router()
-  , query = router.route('/')
+  , query_individual = router.route('/')
 
 var moment = require("moment");
 var momentz = require("moment-timezone");
@@ -63,7 +63,7 @@ earlymorning_end = moment.utc(earlymorning_end.format());
 var toDate = moment()._d;
 var fromDate = moment().subtract('1','month').startOf('day')._d;
 
-query.post(function(req,res){
+query_individual.post(function(req,res){
 
 // call back counter 
 
@@ -118,7 +118,7 @@ query.post(function(req,res){
 		
 
 		
-		getdata.aggregate([{$unwind : '$data' },{$match : { "data.date" : { "$gte" : fromDate,"$lte" : toDate}}},
+		getdata.aggregate([{$unwind : '$data' },{$match : {"number" : mobNum} },{$match : { "data.date" : { "$gte" : fromDate,"$lte" : toDate}}},
 		               	                 
 		             	                   {$project :{ "time" : { "$add": [
 		             	                                                    { "$hour": "$data.date" },
@@ -198,14 +198,14 @@ query.post(function(req,res){
 							 //console.log(datatosend);
 		             				 datatosend = datatosend.concat(session_data);
 							 //console.log("After concatination");
-		             				 //console.log(datatosend)
+		             				 console.log(datatosend)
 		             				
 		             				}
 						callbackCounter++;
 						if(callbackCounter === 5){
 							res.set("Access-Control-Allow-Origin", "*");
 	  						console.log("sending the data as per request at " + moment()._d);
-							console.log(datatosend);
+							//console.log(datatosend);
 	  						res.write(JSON.stringify(datatosend));
 							console.log("sent the data as per request at  " + moment()._d);	  				
 							res.end();
@@ -214,11 +214,12 @@ query.post(function(req,res){
 		
 };
 	
-  console.log("request received for query at " + moment()._d);
+  console.log("request received for query individual at " + moment()._d);
    var received = req.body;
    console.log("data received at " + moment()._d);
  // console.log("the format received through request");
   received = JSON.parse(received);
+  console.log(received);
  
  /* console.log("received start date");
   console.log(received.startDate);
@@ -228,6 +229,7 @@ query.post(function(req,res){
  //storing these in variables
    var startDate = received.startDate;
    var endDate = received.endDate;
+   var mobNum = received.number;
   
 // console.log("Accessing individual start date parameters");
   //directly we wont able to access individual date/month/year etc
@@ -317,7 +319,7 @@ var pad = function(num) {
 };
 
 
-module.exports = query
+module.exports = query_individual
 module.exports = router
 
 

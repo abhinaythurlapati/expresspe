@@ -7,7 +7,9 @@ var server = require('./server');
 var bikeRoutes = require('./routes/bikes');
 var sync_data = require('./routes/synchronise');
 var query = require('./routes/querydb.js');
+var query_individual = require('./routes/querydb_individual.js')
 var getMobileNumbers = require('./routes/sendMobileNumbers.js');
+
 //var database = require("../databaseConnection");
 //var db1 = database.db1();
 //var query = require('./routes/query');
@@ -53,6 +55,8 @@ app.use('/bikes', bikeRoutes);
 app.use('/sync_data',sync_data);
 app.use('/query',query);
 app.use('/get_mbnum',getMobileNumbers);
+app.use('/query_individual',query_individual);
+
 var server = app.listen(8888, function () {
 
 	var host = server.address().address
